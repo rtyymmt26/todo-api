@@ -48,15 +48,15 @@ public class TodoController {
      * Todo を作成します。成功すると 201 Created です。
      * Location ヘッダに、作った Todo の URL を入れます。
      */
-    @PostMapping
+    @PostMapping("/post")
     public ResponseEntity<Todo> create(@RequestBody Todo request) {
         Todo created = todoService.create(request);
-        URI location = URI.create("/api/todos/" + created.getId());
+        URI location = URI.create("/api/todos/post/" + created.getId());
         return ResponseEntity.created(location).body(created);
     }
 
     /** Todo の一覧を返します。0件のときは {@code []} です。 */
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<Todo>> findAll() {
         return ResponseEntity.ok(todoService.findAll());
     }
@@ -65,7 +65,7 @@ public class TodoController {
      * ID で1件取得します。
      * {@code @PathVariable} は URL の {@code {id}} を引数に束ねます。例: /api/todos/1
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Todo> findById(@PathVariable Long id) {
         return ResponseEntity.ok(todoService.findById(id));
     }
@@ -76,7 +76,7 @@ public class TodoController {
      * { "title": "新しい内容", "completed": true }
      * </pre>
      */
-    @PutMapping("/{id}")
+    @PutMapping("/put/{id}")
     public ResponseEntity<Todo> update(@PathVariable Long id, @RequestBody Todo request) {
         return ResponseEntity.ok(todoService.update(id, request));
     }
@@ -84,7 +84,7 @@ public class TodoController {
     /**
      * 1件削除します。成功すると本文なしの 204 No Content です。
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         todoService.delete(id);
         return ResponseEntity.noContent().build();
